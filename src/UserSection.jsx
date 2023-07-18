@@ -2,21 +2,40 @@ import { styled } from "styled-components";
 import SearchBox from "./SearchBox";
 import { GetUserContext } from "./ContextApiUsers";
 import UserList from "./UserList";
+import { useState } from "react";
 
 const UserSection = () => {
   const { UserData } = GetUserContext();
+  const [searchTerm, setSearchterm] = useState("");
+
+  const SearchItem = (e) => {
+    const inputvalue = e.target.value.toLowerCase().trim();
+    setSearchterm(inputvalue);
+  };
+
+  const filterElement = UserData?.filter((item) => {
+    if (searchTerm == "") return item;
+    else {
+      return item.name.toLowerCase().includes(searchTerm);
+    }
+  });
+
+  console.log(filterElement);
 
   return (
     <UserSectionWrapper>
       <Heading>Search User</Heading>
       <div>
-        <SearchBox />
+        <SearchBox SearchItem={SearchItem} />
       </div>
       <UserContainer>
-        {UserData &&
-          UserData.map((item) => {
+        {filterElement && filterElement?.length === 0 ? (
+          <h2>No User Here</h2>
+        ) : (
+          filterElement?.map((item) => {
             return <UserList key={item.id} datas={item} />;
-          })}
+          })
+        )}
       </UserContainer>
     </UserSectionWrapper>
   );

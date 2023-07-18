@@ -1,31 +1,8 @@
-import React from "react";
 import { styled } from "styled-components";
-import { GetUserContext } from "./ContextApiUsers";
 
-const SearchBox = () => {
-  const { UserData, setUserData } = GetUserContext();
-  console.log(UserData);
-
-  const SearchUser = (e) => {
-    let searchinput = e.target.value;
-    let filter = UserData.filter((item) => {
-      return item.name == searchinput;
-    });
-    return filter;
-  };
-
-  const DebounceFunction = (fn, delay) => {
-    let timer;
-    return function () {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        SearchUser();
-      }, 300);
-    };
-  };
-
+const SearchBox = ({ SearchItem }) => {
   return (
-    <InputBox type="text" onChange={SearchUser} placeholder="Search User" />
+    <InputBox type="text" onChange={SearchItem} placeholder="Search User" />
   );
 };
 
